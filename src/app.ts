@@ -6,13 +6,21 @@ import errorHandler from './middlewares/errorHandler';
 import { applySecurityMiddleware } from './middlewares/security';
 
 const app = express();
-app.set('trust proxy', 2);
+app.set('trust proxy', 1);  // Trust all proxies (safe for Railway)
 
+// Log to confirm setting (remove after verification)
+logger.info(`Trust proxy setting: ${app.get('trust proxy')}`);
+
+// Rest of the code...
 app.use(express.json());
 applySecurityMiddleware(app);
 
-app.use('/', profileRouter); // Mount routes
+app.use('/', profileRouter);
 
-app.use(errorHandler); // Error handler last
+app.use(errorHandler);
+
+app.listen('0.0.0.0', () => {  // Ensure binding to all interfaces
+    logger.info(`Server running on port ${config.port}`);
+});
 
 export default app;

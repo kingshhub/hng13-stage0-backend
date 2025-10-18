@@ -6,6 +6,7 @@ import errorHandler from './middlewares/errorHandler';
 import { applySecurityMiddleware } from './middlewares/security';
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(express.json());
 applySecurityMiddleware(app);
